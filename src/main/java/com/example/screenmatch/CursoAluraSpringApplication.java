@@ -1,9 +1,6 @@
 package com.example.screenmatch;
 
 import com.example.screenmatch.main.Main;
-import com.example.screenmatch.model.SeriesData;
-import com.example.screenmatch.service.ApiConsumption;
-import com.example.screenmatch.service.DataConverter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
