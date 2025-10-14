@@ -23,5 +23,6 @@ public class CursoAluraSpringApplication implements CommandLineRunner {
         DataConverter converter = new DataConverter();
         SeriesData seriesData = converter.getData(json, SeriesData.class);
         System.out.println(seriesData);
+        System.out.println("Hello World");
     }
 }
