@@ -1,5 +1,6 @@
 package com.example.screenmatch.main;
 
+import com.example.screenmatch.model.EpisodeData;
 import com.example.screenmatch.model.SeasonData;
 import com.example.screenmatch.model.SeriesData;
 import com.example.screenmatch.service.ApiConsumption;
@@ -29,13 +30,14 @@ public class Main {
 
         List<SeasonData> seasons = new ArrayList<>();
 
-        for (int l = 1; l < seriesData.totalSeasons(); l++){
-            json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + SEASON + l + API_KEY);
+        for (int i = 1; i <= seriesData.totalSeasons(); i++) {
+            json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + SEASON + i + API_KEY);
             SeasonData seasonData = converter.getData(json, SeasonData.class);
-
             seasons.add(seasonData);
         }
-
         seasons.forEach(System.out::println);
+
+        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+
     }
 }
