@@ -1,5 +1,6 @@
 package com.example.screenmatch.main;
 
+import com.example.screenmatch.model.Episode;
 import com.example.screenmatch.model.EpisodeData;
 import com.example.screenmatch.model.SeasonData;
 import com.example.screenmatch.model.SeriesData;
@@ -25,7 +26,7 @@ public class Main {
         var json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + API_KEY);
 
         SeriesData seriesData = converter.getData(json, SeriesData.class);
-//        System.out.println(seriesData);
+        System.out.println(seriesData);
 
         List<SeasonData> seasons = new ArrayList<>();
 
@@ -34,18 +35,18 @@ public class Main {
             SeasonData seasonData = converter.getData(json, SeasonData.class);
             seasons.add(seasonData);
         }
-//        seasons.forEach(System.out::println);
-//
-//        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+        seasons.forEach(System.out::println);
 
-//        List<String> nomes = Arrays.asList("Nome1", "Nome2");
-//
-//        nomes.stream()
-//                .sorted()
-//                .limit(3)
-//                .filter(n -> n.startsWith("N"))
-//                .map(n -> n.toUpperCase())
-//                .forEach(System.out::println);
+        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+
+        List<String> nomes = Arrays.asList("Nome1", "Nome2");
+
+        nomes.stream()
+                .sorted()
+                .limit(3)
+                .filter(n -> n.startsWith("N"))
+                .map(n -> n.toUpperCase())
+                .forEach(System.out::println);
 
         List<EpisodeData> episodes = seasons.stream()
                 .flatMap(t -> t.episodes().stream())
@@ -57,5 +58,13 @@ public class Main {
                 .sorted(Comparator.comparing(EpisodeData::imdbRating).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        System.out.println("\n");
+        List<Episode> episode = seasons.stream()
+                .flatMap(s -> s.episodes().stream()
+                .map(d -> new Episode(s.seasonNumber(), d))
+                ).collect(Collectors.toList());
+
+        episode.forEach(System.out::println);
     }
 }
