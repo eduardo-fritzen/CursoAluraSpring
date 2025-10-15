@@ -7,6 +7,7 @@ import com.example.screenmatch.service.ApiConsumption;
 import com.example.screenmatch.service.DataConverter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,24 +21,32 @@ public class Main {
     private final String API_KEY = "&apikey=f4db69c5";
     private final String SEASON = "&season=";
     public void showMenu() {
-        System.out.println("Digite o nome da série para buscar: ");
+/*        System.out.println("Digite o nome da série para buscar: ");
 
         var seriesName =  scanner.nextLine();
-        var json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + API_KEY);
+        var json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + API_KEY);*/
 
-        SeriesData seriesData = converter.getData(json, SeriesData.class);
-        System.out.println(seriesData);
+//        SeriesData seriesData = converter.getData(json, SeriesData.class);
+//        System.out.println(seriesData);
+//
+//        List<SeasonData> seasons = new ArrayList<>();
+//
+//        for (int i = 1; i <= seriesData.totalSeasons(); i++) {
+//            json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + SEASON + i + API_KEY);
+//            SeasonData seasonData = converter.getData(json, SeasonData.class);
+//            seasons.add(seasonData);
+//        }
+//        seasons.forEach(System.out::println);
+//
+//        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
 
-        List<SeasonData> seasons = new ArrayList<>();
+        List<String> nomes = Arrays.asList("Nome1", "Nome2");
 
-        for (int i = 1; i <= seriesData.totalSeasons(); i++) {
-            json = consumption.getData(ADDRESS + seriesName.replace(" ", "+") + SEASON + i + API_KEY);
-            SeasonData seasonData = converter.getData(json, SeasonData.class);
-            seasons.add(seasonData);
-        }
-        seasons.forEach(System.out::println);
-
-        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
-
+        nomes.stream()
+                .sorted()
+                .limit(3)
+                .filter(n -> n.startsWith("N"))
+                .map(n -> n.toUpperCase())
+                .forEach(System.out::println);
     }
 }

@@ -14,7 +14,17 @@ public class CursoAluraSpringApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+<<<<<<< Updated upstream
         Main main = new Main();
         main.showMenu();
+=======
+        var consumoApi = new ApiConsumption();
+        var json = consumoApi.getData("https://www.omdbapi.com/?t=the+big+bang+theory&apikey=f4db69c5");
+        System.out.println(json);
+
+        DataConverter converter = new DataConverter();
+        SeriesData seriesData = converter.getData(json, SeriesData.class);
+        System.out.println(seriesData);
+>>>>>>> Stashed changes
     }
 }
