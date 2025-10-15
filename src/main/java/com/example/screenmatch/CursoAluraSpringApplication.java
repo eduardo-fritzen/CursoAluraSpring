@@ -1,5 +1,6 @@
 package com.example.screenmatch;
 
+import com.example.screenmatch.main.Main;
 import com.example.screenmatch.model.SeriesData;
 import com.example.screenmatch.service.ApiConsumption;
 import com.example.screenmatch.service.DataConverter;
@@ -16,12 +17,7 @@ public class CursoAluraSpringApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        var consumoApi = new ApiConsumption();
-        var json = consumoApi.getData("https://www.omdbapi.com/?t=the+big+bang+theory&apikey=f4db69c5");
-        System.out.println(json);
-
-        DataConverter converter = new DataConverter();
-        SeriesData seriesData = converter.getData(json, SeriesData.class);
-        System.out.println(seriesData);
+        Main main = new Main();
+        main.showMenu();
     }
 }
