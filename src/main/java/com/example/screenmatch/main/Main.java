@@ -7,6 +7,8 @@ import com.example.screenmatch.model.SeriesData;
 import com.example.screenmatch.service.ApiConsumption;
 import com.example.screenmatch.service.DataConverter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,5 +68,20 @@ public class Main {
                 ).collect(Collectors.toList());
 
         episode.forEach(System.out::println);
+
+        System.out.println("A partir de que ano você quer ver os episódios? ");
+        var year = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate dateSearch = LocalDate.of(year, 1 ,1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        episode.stream()
+                .filter(e -> e.getReleasedDate() != null && e.getReleasedDate().isAfter(dateSearch))
+                .forEach(e -> System.out.println(
+                        "Season: " + e.getSeason() +
+                                " Episode: " + e.getTitle() +
+                                " Released Date: " + e.getReleasedDate().format(formatter))
+                );
     }
 }
