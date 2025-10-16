@@ -57,8 +57,13 @@ public class Main {
         System.out.println("\n TOP 5 Episodes:");
         episodes.stream()
                 .filter(e -> !e.imdbRating().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primeiro FIltro (N/A) " + e))
                 .sorted(Comparator.comparing(EpisodeData::imdbRating).reversed())
+                .peek(e -> System.out.println("Ordenação " + e))
                 .limit(5)
+                .peek(e -> System.out.println("Limite " + e))
+                .map(e -> e.title().toUpperCase())
+                .peek(e -> System.out.println("Mapeamento para UpperCase " + e))
                 .forEach(System.out::println);
 
         System.out.println("\n");
