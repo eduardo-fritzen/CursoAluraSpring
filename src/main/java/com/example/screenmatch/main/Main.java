@@ -37,75 +37,83 @@ public class Main {
             SeasonData seasonData = converter.getData(json, SeasonData.class);
             seasons.add(seasonData);
         }
-//        seasons.forEach(System.out::println);
-//
-//        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
-//
-//        List<String> nomes = Arrays.asList("Nome1", "Nome2");
-//
-//        nomes.stream()
-//                .sorted()
-//                .limit(3)
-//                .filter(n -> n.startsWith("N"))
-//                .map(n -> n.toUpperCase())
-//                .forEach(System.out::println);
+        seasons.forEach(System.out::println);
+
+        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+
+        List<String> nomes = Arrays.asList("Nome1", "Nome2");
+
+        nomes.stream()
+                .sorted()
+                .limit(3)
+                .filter(n -> n.startsWith("N"))
+                .map(n -> n.toUpperCase())
+                .forEach(System.out::println);
 
         List<EpisodeData> episodes = seasons.stream()
                 .flatMap(t -> t.episodes().stream())
                 .toList();
 
-//        System.out.println("\n TOP 5 Episodes:");
-//        episodes.stream()
-//                .filter(e -> !e.imdbRating().equalsIgnoreCase("N/A"))
-//                .peek(e -> System.out.println("Primeiro FIltro (N/A) " + e))
-//                .sorted(Comparator.comparing(EpisodeData::imdbRating).reversed())
-//                .peek(e -> System.out.println("Ordenação " + e))
-//                .limit(5)
-//                .peek(e -> System.out.println("Limite " + e))
-//                .map(e -> e.title().toUpperCase())
-//                .peek(e -> System.out.println("Mapeamento para UpperCase " + e))
-//                .forEach(System.out::println);
+        System.out.println("\n TOP 5 Episodes:");
+        episodes.stream()
+                .filter(e -> !e.imdbRating().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primeiro FIltro (N/A) " + e))
+                .sorted(Comparator.comparing(EpisodeData::imdbRating).reversed())
+                .peek(e -> System.out.println("Ordenação " + e))
+                .limit(5)
+                .peek(e -> System.out.println("Limite " + e))
+                .map(e -> e.title().toUpperCase())
+                .peek(e -> System.out.println("Mapeamento para UpperCase " + e))
+                .forEach(System.out::println);
 
-//        System.out.println("\n");
+        System.out.println("\n");
         List<Episode> episode = seasons.stream()
                 .flatMap(s -> s.episodes().stream()
                 .map(d -> new Episode(s.seasonNumber(), d))
                 ).collect(Collectors.toList());
 
-//        episode.forEach(System.out::println);
-//
-//        System.out.println("Digite um trecho do título do episódio: ");
-//        var titleExcerpt = scanner.nextLine();
-//        Optional<Episode> searchedEpisode = episode.stream()
-//                .filter(e -> e.getTitle().toUpperCase().contains(titleExcerpt.toUpperCase()))
-//                .findFirst();
-//
-//        if (searchedEpisode.isPresent()) {
-//            System.out.println("Episódio Encontrado!");
-//            System.out.println("Temporada: " + searchedEpisode.get().getSeason());
-//        } else {
-//            System.out.println("Episódio não encontrado!");
-//        }
+        episode.forEach(System.out::println);
 
-//        System.out.println("A partir de que ano você quer ver os episódios? ");
-//        var year = scanner.nextInt();
-//        scanner.nextLine();
-//
-//        LocalDate dateSearch = LocalDate.of(year, 1 ,1);
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        episode.stream()
-//                .filter(e -> e.getReleasedDate() != null && e.getReleasedDate().isAfter(dateSearch))
-//                .forEach(e -> System.out.println(
-//                        "Season: " + e.getSeason() +
-//                                " Episode: " + e.getTitle() +
-//                                " Released Date: " + e.getReleasedDate().format(formatter))
-//                );
+        System.out.println("Digite um trecho do título do episódio: ");
+        var titleExcerpt = scanner.nextLine();
+        Optional<Episode> searchedEpisode = episode.stream()
+                .filter(e -> e.getTitle().toUpperCase().contains(titleExcerpt.toUpperCase()))
+                .findFirst();
+
+        if (searchedEpisode.isPresent()) {
+            System.out.println("Episódio Encontrado!");
+            System.out.println("Temporada: " + searchedEpisode.get().getSeason());
+        } else {
+            System.out.println("Episódio não encontrado!");
+        }
+
+        System.out.println("A partir de que ano você quer ver os episódios? ");
+        var year = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate dateSearch = LocalDate.of(year, 1 ,1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        episode.stream()
+                .filter(e -> e.getReleasedDate() != null && e.getReleasedDate().isAfter(dateSearch))
+                .forEach(e -> System.out.println(
+                        "Season: " + e.getSeason() +
+                                " Episode: " + e.getTitle() +
+                                " Released Date: " + e.getReleasedDate().format(formatter))
+                );
 
         Map<Integer, Double> ratingBySeason = episode.stream()
                 .filter(e -> e.getImdbRating() > 0.0)
                 .collect(Collectors.groupingBy(Episode::getSeason,
                         Collectors.averagingDouble(Episode::getImdbRating)));
         System.out.println(ratingBySeason);
+
+        DoubleSummaryStatistics statistics = episode.stream()
+                .filter(e -> e.getImdbRating() > 0.0)
+                .collect(Collectors.summarizingDouble(Episode::getImdbRating));
+        System.out.println("Média: " + statistics.getAverage() +
+                "\nMelhor Episódio " + statistics.getMax() +
+                "\nPior Episódio " + statistics.getMin() +
+                "\nQuantidade " + statistics.getCount());
     }
 }
